@@ -40,7 +40,7 @@ export async function loginAdmin(email: string, password: string) {
 export async function refreshTokens(refreshToken: string) {
   let payload: JwtPayload;
   try {
-    payload = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET) as JwtPayload;
+    payload = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET) as unknown as JwtPayload;
   } catch {
     throw ApiError.unauthorized('Invalid refresh token');
   }

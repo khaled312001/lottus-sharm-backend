@@ -27,12 +27,13 @@ const createSchema = z.object({
 });
 const updateSchema = createSchema.partial();
 
-const include = {
+const include = Prisma.validator<Prisma.BlogPostInclude>()({
   translations: true,
   coverImage: true,
   author: { select: { id: true, name: true, email: true } },
   tags: { include: { tag: { include: { translations: true } } } },
-} satisfies Prisma.BlogPostInclude;
+});
+type BlogPostWithInclude = Prisma.BlogPostGetPayload<{ include: typeof include }>;
 
 export const publicBlogRouter = Router();
 publicBlogRouter.get(
@@ -58,7 +59,7 @@ publicBlogRouter.get(
         take: q.pageSize,
       }),
     ]);
-    const mapped = items.map((p) => ({
+    const mapped = (items as BlogPostWithInclude[]).map((p) => ({
       ...p,
       tr:
         p.translations.find((t) => t.locale === q.locale) ||
@@ -73,7 +74,7 @@ publicBlogRouter.get(
   '/:slug',
   asyncHandler(async (req, res) => {
     const q = z.object({ locale: LocaleEnum.default('AR') }).parse(req.query);
-    const post = await prisma.blogPost.findUnique({ where: { slug: req.params.slug }, include });
+    const post = (await prisma.blogPost.findUnique({ where: { slug: req.params.slug }, include })) as BlogPostWithInclude | null;
     if (!post || post.status !== PostStatus.PUBLISHED) throw ApiError.notFound();
     const tr =
       post.translations.find((t) => t.locale === q.locale) ||

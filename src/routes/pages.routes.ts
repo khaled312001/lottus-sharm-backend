@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { Locale } from '@prisma/client';
+import { Locale, Prisma } from '@prisma/client';
 import { asyncHandler } from '../utils/async-handler';
 import { requireAuth } from '../middlewares/auth.middleware';
 import { prisma } from '../config/db';
@@ -22,15 +22,19 @@ const createSchema = z.object({
 });
 const updateSchema = z.object({ translations: z.array(translation).min(1) });
 
+const pageInclude = Prisma.validator<Prisma.StaticPageInclude>()({ translations: true });
+type StaticPageWithTranslations = Prisma.StaticPageGetPayload<{ include: typeof pageInclude }>;
+
 export const publicPagesRouter = Router();
 publicPagesRouter.get(
   '/:slug',
   asyncHandler(async (req, res) => {
     const q = z.object({ locale: LocaleEnum.default('AR') }).parse(req.query);
-    const page = await prisma.staticPage.findUnique({
-      where: { slug: req.params.slug },
-      include: { translations: true },
-    });
+    const slug = String(req.params.slug);
+    const page = (await prisma.staticPage.findUnique({
+      where: { slug },
+      include: pageInclude,
+    })) as StaticPageWithTranslations | null;
     if (!page) throw ApiError.notFound();
     const tr =
       page.translations.find((t) => t.locale === q.locale) ||
@@ -46,7 +50,7 @@ adminPagesRouter.use(requireAuth);
 adminPagesRouter.get(
   '/',
   asyncHandler(async (_req, res) => {
-    const items = await prisma.staticPage.findMany({ include: { translations: true }, orderBy: { id: 'asc' } });
+    const items = await prisma.staticPage.findMany({ include: pageInclude, orderBy: { id: 'asc' } });
     res.json({ ok: true, data: { items } });
   }),
 );
@@ -54,9 +58,10 @@ adminPagesRouter.get(
 adminPagesRouter.get(
   '/:slug',
   asyncHandler(async (req, res) => {
+    const slug = String(req.params.slug);
     const page = await prisma.staticPage.findUnique({
-      where: { slug: req.params.slug },
-      include: { translations: true },
+      where: { slug },
+      include: pageInclude,
     });
     if (!page) throw ApiError.notFound();
     res.json({ ok: true, data: page });
@@ -70,7 +75,7 @@ adminPagesRouter.post(
     const slug = slugify(body.slug);
     const page = await prisma.staticPage.create({
       data: { slug, translations: { create: body.translations } },
-      include: { translations: true },
+      include: pageInclude,
     });
     res.status(201).json({ ok: true, data: page });
   }),
@@ -80,7 +85,8 @@ adminPagesRouter.patch(
   '/:slug',
   asyncHandler(async (req, res) => {
     const body = updateSchema.parse(req.body);
-    const existing = await prisma.staticPage.findUnique({ where: { slug: req.params.slug } });
+    const slug = String(req.params.slug);
+    const existing = await prisma.staticPage.findUnique({ where: { slug } });
     if (!existing) throw ApiError.notFound();
     for (const t of body.translations) {
       await prisma.staticPageTranslation.upsert({
@@ -91,7 +97,7 @@ adminPagesRouter.patch(
     }
     const page = await prisma.staticPage.findUnique({
       where: { id: existing.id },
-      include: { translations: true },
+      include: pageInclude,
     });
     res.json({ ok: true, data: page });
   }),
@@ -100,7 +106,8 @@ adminPagesRouter.patch(
 adminPagesRouter.delete(
   '/:slug',
   asyncHandler(async (req, res) => {
-    await prisma.staticPage.delete({ where: { slug: req.params.slug } });
+    const slug = String(req.params.slug);
+    await prisma.staticPage.delete({ where: { slug } });
     res.json({ ok: true });
   }),
 );
