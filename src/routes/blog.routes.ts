@@ -74,7 +74,7 @@ publicBlogRouter.get(
   '/:slug',
   asyncHandler(async (req, res) => {
     const q = z.object({ locale: LocaleEnum.default('AR') }).parse(req.query);
-    const post = (await prisma.blogPost.findUnique({ where: { slug: req.params.slug }, include })) as BlogPostWithInclude | null;
+    const post = (await prisma.blogPost.findUnique({ where: { slug: String(req.params.slug) }, include })) as BlogPostWithInclude | null;
     if (!post || post.status !== PostStatus.PUBLISHED) throw ApiError.notFound();
     const tr =
       post.translations.find((t) => t.locale === q.locale) ||

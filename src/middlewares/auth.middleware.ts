@@ -30,7 +30,7 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction) {
   const token = extractToken(req);
   if (!token) return next(ApiError.unauthorized('Missing access token'));
   try {
-    const payload = jwt.verify(token, env.JWT_ACCESS_SECRET) as JwtPayload;
+    const payload = jwt.verify(token, env.JWT_ACCESS_SECRET) as unknown as JwtPayload;
     req.admin = payload;
     next();
   } catch {

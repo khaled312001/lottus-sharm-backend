@@ -27,6 +27,7 @@ import { publicPagesRouter, adminPagesRouter } from './routes/pages.routes';
 import { publicContactRouter, adminContactRouter } from './routes/contact.routes';
 import { publicNewsletterRouter, adminNewsletterRouter } from './routes/newsletter.routes';
 import { publicReviewsRouter, adminReviewsRouter } from './routes/reviews.routes';
+import { adminEmailRouter } from './routes/email.routes';
 import customersRoutes from './routes/customers.routes';
 import usersRoutes from './routes/users.routes';
 import statsRoutes from './routes/stats.routes';
@@ -101,6 +102,7 @@ export function buildApp() {
   app.use('/api/admin/media', mediaRoutes);
   app.use('/api/admin/stats', statsRoutes);
   app.use('/api/admin/translate', translateRoutes);
+  app.use('/api/admin/email', adminEmailRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

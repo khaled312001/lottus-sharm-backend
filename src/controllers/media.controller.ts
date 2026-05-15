@@ -8,7 +8,7 @@ import { prisma } from '../config/db';
 const listQuery = z.object({
   type: z.enum(['IMAGE', 'VIDEO']).optional(),
   page: z.coerce.number().int().positive().default(1),
-  pageSize: z.coerce.number().int().positive().max(100).default(24),
+  pageSize: z.coerce.number().int().positive().max(500).default(24),
 });
 
 export async function upload(req: Request, res: Response) {

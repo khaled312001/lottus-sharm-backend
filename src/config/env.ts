@@ -20,8 +20,8 @@ const envSchema = z.object({
   SMTP_SECURE: z.coerce.boolean().optional(),
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
-  EMAIL_FROM: z.string().default('Lottus Sharm <noreply@lottussharm.com>'),
-  EMAIL_ADMIN: z.string().default('admin@lottussharm.com'),
+  EMAIL_FROM: z.string().default('Lottus Sharm <info@lotussharm.com>'),
+  EMAIL_ADMIN: z.string().default('info@lotussharm.com'),
 
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),

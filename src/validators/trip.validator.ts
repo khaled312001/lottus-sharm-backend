@@ -59,7 +59,7 @@ export const tripListQuery = z.object({
   featured: z.coerce.boolean().optional(),
   active: z.coerce.boolean().default(true),
   page: z.coerce.number().int().positive().default(1),
-  pageSize: z.coerce.number().int().positive().max(50).default(12),
+  pageSize: z.coerce.number().int().positive().max(200).default(12),
   search: z.string().optional(),
 });
 

@@ -4,6 +4,7 @@ import { asyncHandler } from '../utils/async-handler';
 import { requireAuth } from '../middlewares/auth.middleware';
 import { prisma } from '../config/db';
 import { LocaleEnum } from '../validators/trip.validator';
+import { sendReviewSubmittedEmail } from '../services/email.service';
 
 const reviewCreate = z.object({
   tripId: z.number().int().positive(),
@@ -46,6 +47,18 @@ publicReviewsRouter.post(
   asyncHandler(async (req, res) => {
     const body = reviewCreate.parse(req.body);
     const review = await prisma.review.create({ data: body });
+    // Notify admin so they can moderate
+    const trip = await prisma.trip.findUnique({
+      where: { id: body.tripId },
+      include: { translations: { where: { locale: 'AR' } } },
+    });
+    sendReviewSubmittedEmail({
+      customerName: body.customerName,
+      rating: body.rating,
+      comment: body.comment,
+      locale: body.locale,
+      tripTitle: trip?.translations[0]?.title,
+    }).catch((e) => console.error('[email]', e));
     res.status(201).json({ ok: true, data: { id: review.id } });
   }),
 );

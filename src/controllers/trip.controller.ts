@@ -36,7 +36,7 @@ export async function publicList(req: Request, res: Response) {
 
 export async function publicGet(req: Request, res: Response) {
   const q = z.object({ locale: z.enum(['AR', 'EN', 'RU', 'IT']).default('AR') }).parse(req.query);
-  const trip = await getTripBySlug(req.params.slug);
+  const trip = await getTripBySlug(String(req.params.slug));
   res.json({ ok: true, data: projectForLocale(trip, q.locale) });
 }
 
