@@ -160,6 +160,9 @@ model Trip {
   bullets      TripBulletPoint[]
   bookings     Booking[]
   reviews      Review[]
+  likes        TripLike[]
+  comments     TripComment[]
+  timeline     TripTimelineStep[]
 
   @@index([category])
   @@index([isFeatured])
@@ -421,6 +424,62 @@ model Review {
   trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
 
   @@index([isApproved])
+}
+
+// ============== LIKES ==============
+model TripLike {
+  id        Int      @id @default(autoincrement())
+  tripId    Int
+  visitorId String   @db.VarChar(80)
+  createdAt DateTime @default(now())
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@unique([tripId, visitorId])
+  @@index([tripId])
+}
+
+// ============== COMMENTS ==============
+model TripComment {
+  id          Int      @id @default(autoincrement())
+  tripId      Int
+  authorName  String   @db.VarChar(120)
+  authorEmail String?  @db.VarChar(255)
+  content     String   @db.Text
+  locale      Locale   @default(AR)
+  isApproved  Boolean  @default(true)
+  visitorId   String?  @db.VarChar(80)
+  createdAt   DateTime @default(now())
+
+  trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@index([tripId, isApproved])
+}
+
+// ============== TIMELINE ==============
+model TripTimelineStep {
+  id     Int     @id @default(autoincrement())
+  tripId Int
+  order  Int     @default(0)
+  time   String? @db.VarChar(10)
+  icon   String? @db.VarChar(40)
+
+  trip         Trip                          @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  translations TripTimelineStepTranslation[]
+
+  @@index([tripId])
+}
+
+model TripTimelineStepTranslation {
+  id     Int     @id @default(autoincrement())
+  stepId Int
+  locale Locale
+  title  String  @db.VarChar(255)
+  desc   String? @db.Text
+
+  step TripTimelineStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  @@unique([stepId, locale])
 }
 
 // ============== SETTINGS ==============

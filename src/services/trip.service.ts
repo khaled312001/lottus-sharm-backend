@@ -10,6 +10,8 @@ const tripInclude = {
   highlights: { include: { translations: true }, orderBy: { order: 'asc' as const } },
   bullets: { include: { translations: true }, orderBy: [{ type: 'asc' as const }, { order: 'asc' as const }] },
   gallery: { include: { media: true }, orderBy: { order: 'asc' as const } },
+  timeline: { include: { translations: true }, orderBy: { order: 'asc' as const } },
+  _count: { select: { likes: true, comments: { where: { isApproved: true } }, reviews: { where: { isApproved: true } } } },
 } satisfies Prisma.TripInclude;
 
 export async function listTrips(params: {
@@ -47,7 +49,11 @@ export async function listTrips(params: {
 export async function getTripBySlug(slug: string) {
   const trip = await prisma.trip.findUnique({ where: { slug }, include: tripInclude });
   if (!trip) throw ApiError.notFound('Trip not found');
-  return trip;
+  const avg = await prisma.review.aggregate({
+    where: { tripId: trip.id, isApproved: true },
+    _avg: { rating: true },
+  });
+  return { ...trip, ratingAverage: avg._avg.rating ?? 0 };
 }
 
 export async function getTripById(id: number) {

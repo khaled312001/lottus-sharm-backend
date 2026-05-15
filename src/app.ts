@@ -26,7 +26,9 @@ import { publicBlogRouter, adminBlogRouter } from './routes/blog.routes';
 import { publicPagesRouter, adminPagesRouter } from './routes/pages.routes';
 import { publicContactRouter, adminContactRouter } from './routes/contact.routes';
 import { publicNewsletterRouter, adminNewsletterRouter } from './routes/newsletter.routes';
-import { publicReviewsRouter, adminReviewsRouter } from './routes/reviews.routes';
+import { publicReviewsRouter, publicReviewsBySlugRouter, adminReviewsRouter } from './routes/reviews.routes';
+import { publicLikesRouter } from './routes/likes.routes';
+import { publicCommentsRouter, adminCommentsRouter } from './routes/comments.routes';
 import { adminEmailRouter } from './routes/email.routes';
 import customersRoutes from './routes/customers.routes';
 import usersRoutes from './routes/users.routes';
@@ -77,6 +79,9 @@ export function buildApp() {
   // === Public ===
   app.use('/api/auth', authRoutes);
   app.use('/api/public/trips', publicTripsRouter);
+  app.use('/api/public/trips/:slug/likes', publicLikesRouter);
+  app.use('/api/public/trips/:slug/comments', publicCommentsRouter);
+  app.use('/api/public/trips/:slug/reviews', publicReviewsBySlugRouter);
   app.use('/api/public/bookings', publicBookingsRouter);
   app.use('/api/public/payments', publicPaymentsRouter);
   app.use('/api/public/settings', publicSettingsRouter);
@@ -96,6 +101,7 @@ export function buildApp() {
   app.use('/api/admin/contact', adminContactRouter);
   app.use('/api/admin/newsletter', adminNewsletterRouter);
   app.use('/api/admin/reviews', adminReviewsRouter);
+  app.use('/api/admin/comments', adminCommentsRouter);
   app.use('/api/admin/customers', customersRoutes);
   app.use('/api/admin/users', usersRoutes);
   app.use('/api/admin/settings', adminSettingsRouter);
