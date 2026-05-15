@@ -14,6 +14,22 @@ const reviewCreate = z.object({
 });
 
 export const publicReviewsRouter = Router();
+
+// GET /api/public/reviews — all approved reviews across all trips
+publicReviewsRouter.get(
+  '/',
+  asyncHandler(async (req, res) => {
+    const limit = Math.min(Number(req.query.limit ?? 12), 50);
+    const items = await prisma.review.findMany({
+      where: { isApproved: true },
+      include: { trip: { include: { translations: true } } },
+      orderBy: { id: 'desc' },
+      take: limit,
+    });
+    res.json({ ok: true, data: { items } });
+  }),
+);
+
 publicReviewsRouter.get(
   '/:tripId',
   asyncHandler(async (req, res) => {
