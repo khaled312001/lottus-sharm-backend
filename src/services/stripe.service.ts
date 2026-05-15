@@ -21,7 +21,7 @@ export async function createCheckoutSession(bookingId: number, locale: string = 
   const title =
     booking.trip.translations.find((t) => t.locale === 'EN')?.title ||
     booking.trip.translations[0]?.title ||
-    'Lottus Sharm Trip';
+    'Lotus Sharm Trip';
 
   const currency = booking.currency === 'USD' ? 'usd' : 'egp';
   const unitAmount = Math.round(Number(booking.total) * 100);

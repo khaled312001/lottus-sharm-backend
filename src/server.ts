@@ -5,11 +5,11 @@ import { disconnectDb } from './config/db';
 const app = buildApp();
 
 const server = app.listen(env.PORT, () => {
-  console.log(`[lottus-backend] 🚀 listening on :${env.PORT} (${env.NODE_ENV})`);
+  console.log(`[lotus-backend] 🚀 listening on :${env.PORT} (${env.NODE_ENV})`);
 });
 
 const shutdown = async () => {
-  console.log('[lottus-backend] shutting down...');
+  console.log('[lotus-backend] shutting down...');
   server.close(async () => {
     await disconnectDb();
     process.exit(0);

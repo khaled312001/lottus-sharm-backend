@@ -1,5 +1,5 @@
 // Reads all images/videos from a folder and pushes them as Media rows + links the first 30 to the Ras Mohammed trip.
-// Usage: npm run seed:media -- "E:/Lottus Sharm Tourism/Images & Videos"
+// Usage: npm run seed:media -- "E:/Lotus Sharm Tourism/Images & Videos"
 import path from 'path';
 import fs from 'fs/promises';
 import { PrismaClient, MediaType } from '@prisma/client';

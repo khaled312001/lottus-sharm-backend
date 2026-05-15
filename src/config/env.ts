@@ -20,7 +20,7 @@ const envSchema = z.object({
   SMTP_SECURE: z.coerce.boolean().optional(),
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
-  EMAIL_FROM: z.string().default('Lottus Sharm <info@lotussharm.com>'),
+  EMAIL_FROM: z.string().default('Lotus Sharm <info@lotussharm.com>'),
   EMAIL_ADMIN: z.string().default('info@lotussharm.com'),
 
   STRIPE_SECRET_KEY: z.string().optional(),
@@ -36,9 +36,9 @@ const envSchema = z.object({
   MAX_IMAGE_SIZE_MB: z.coerce.number().default(20),
   MAX_VIDEO_SIZE_MB: z.coerce.number().default(200),
 
-  SEED_ADMIN_EMAIL: z.string().email().default('admin@lottussharm.com'),
-  SEED_ADMIN_PASSWORD: z.string().min(8).default('ChangeMe!Lottus2026'),
-  SEED_ADMIN_NAME: z.string().default('Lottus Admin'),
+  SEED_ADMIN_EMAIL: z.string().email().default('admin@lotussharm.com'),
+  SEED_ADMIN_PASSWORD: z.string().min(8).default('ChangeMe!Lotus2026'),
+  SEED_ADMIN_NAME: z.string().default('Lotus Admin'),
 });
 
 const parsed = envSchema.safeParse(process.env);

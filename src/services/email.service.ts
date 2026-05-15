@@ -70,11 +70,11 @@ function brandedTemplate(opts: {
   const locale = opts.locale ?? 'AR';
   const isAr = locale === 'AR';
   const dir = isAr ? 'rtl' : 'ltr';
-  const company = isAr ? 'لوتس شرم للسياحة' : 'Lottus Sharm Tourism';
+  const company = isAr ? 'لوتس شرم للسياحة' : 'Lotus Sharm Tourism';
   const tagline = isAr ? 'لو جاى شرم متشلش هم' : 'Your worry-free Sharm trip';
   const footerCopy = isAr
     ? 'هذه الرسالة أُرسلت من موقع لوتس شرم. للاستفسار تواصل معنا على'
-    : 'This email was sent from Lottus Sharm. Get in touch:';
+    : 'This email was sent from Lotus Sharm. Get in touch:';
 
   return `<!DOCTYPE html>
 <html dir="${dir}" lang="${locale.toLowerCase()}">
@@ -169,7 +169,7 @@ export async function sendBookingCreatedEmails(bookingId: number) {
     ? `<p style="margin:0 0 14px;">عزيزي/عزيزتي <strong>${booking.customer.fullName}</strong>،</p>
        <p style="margin:0 0 18px;">شكراً لاختيارك <strong style="color:${BRAND.primary};">لوتس شرم</strong>! استلمنا طلب حجزك بنجاح، ولسه باقي تأكيد بسيط من فريقنا. لو محتاج تستعجل أو تعدل أي تفصيلة، كلمنا على واتساب.</p>`
     : `<p style="margin:0 0 14px;">Dear <strong>${booking.customer.fullName}</strong>,</p>
-       <p style="margin:0 0 18px;">Thank you for choosing <strong style="color:${BRAND.primary};">Lottus Sharm</strong>! Your booking request has been received. Our team will reach out shortly to finalize the details.</p>`;
+       <p style="margin:0 0 18px;">Thank you for choosing <strong style="color:${BRAND.primary};">Lotus Sharm</strong>! Your booking request has been received. Our team will reach out shortly to finalize the details.</p>`;
 
   const bookingTable = `
     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;background:${BRAND.cream};border-radius:10px;overflow:hidden;margin:8px 0 20px;">
@@ -190,7 +190,7 @@ export async function sendBookingCreatedEmails(bookingId: number) {
 
   await send(
     booking.customer.email,
-    isAr ? `استلام طلب الحجز ${booking.reference} — لوتس شرم` : `Booking received ${booking.reference} — Lottus Sharm`,
+    isAr ? `استلام طلب الحجز ${booking.reference} — لوتس شرم` : `Booking received ${booking.reference} — Lotus Sharm`,
     brandedTemplate({
       title: isAr ? 'تم استلام طلب الحجز' : 'Booking received',
       preheader: isAr ? `حجزك رقم ${booking.reference} لرحلة ${tripTitle}` : `Booking ${booking.reference} for ${tripTitle}`,
@@ -257,7 +257,7 @@ export async function sendBookingConfirmedEmail(bookingId: number) {
 
   await send(
     booking.customer.email,
-    isAr ? `تأكيد حجزك ${booking.reference} — لوتس شرم` : `Booking confirmed ${booking.reference} — Lottus Sharm`,
+    isAr ? `تأكيد حجزك ${booking.reference} — لوتس شرم` : `Booking confirmed ${booking.reference} — Lotus Sharm`,
     brandedTemplate({
       title: isAr ? 'تأكيد الحجز' : 'Booking confirmed',
       preheader: isAr ? `حجزك ${booking.reference} مؤكد` : `Your booking ${booking.reference} is confirmed`,
@@ -316,7 +316,7 @@ export async function sendContactInquiryEmail(input: {
        <p style="margin:0 0 14px;color:${BRAND.muted};font-size:14px;">For a faster reply, message us on WhatsApp.</p>`;
   await send(
     input.email,
-    isAr ? 'استلام رسالتك — لوتس شرم' : 'We received your message — Lottus Sharm',
+    isAr ? 'استلام رسالتك — لوتس شرم' : 'We received your message — Lotus Sharm',
     brandedTemplate({
       title: isAr ? 'تم استلام رسالتك' : 'Message received',
       preheader: isAr ? 'سنرد عليك قريباً' : "We'll reply shortly",
@@ -337,14 +337,14 @@ export async function sendNewsletterWelcomeEmail(email: string, locale: 'AR' | '
     ? `<p style="margin:0 0 14px;">شكراً لاشتراكك في نشرة <strong style="color:${BRAND.primary};">لوتس شرم</strong>!</p>
        <p style="margin:0 0 14px;">هتوصلك أحدث العروض والرحلات والوجهات الجديدة قبل أي حد. وعلى رأسها رحلات راس محمد، تيران، الكولور كانيون، والسفاري الصحراوي.</p>
        <p style="margin:0;color:${BRAND.muted};font-size:14px;">ابدأ من هنا واختار مغامرتك:</p>`
-    : `<p style="margin:0 0 14px;">Thanks for subscribing to <strong style="color:${BRAND.primary};">Lottus Sharm</strong>!</p>
+    : `<p style="margin:0 0 14px;">Thanks for subscribing to <strong style="color:${BRAND.primary};">Lotus Sharm</strong>!</p>
        <p style="margin:0 0 14px;">You'll receive our latest trips, offers and new destinations before anyone else — from Ras Mohammed to Tiran, the Color Canyon and our desert safari.</p>
        <p style="margin:0;color:${BRAND.muted};font-size:14px;">Start exploring:</p>`;
   await send(
     email,
-    isAr ? 'أهلاً بك في لوتس شرم' : 'Welcome to Lottus Sharm',
+    isAr ? 'أهلاً بك في لوتس شرم' : 'Welcome to Lotus Sharm',
     brandedTemplate({
-      title: isAr ? 'أهلاً بك في عائلة لوتس شرم' : 'Welcome to the Lottus Sharm family',
+      title: isAr ? 'أهلاً بك في عائلة لوتس شرم' : 'Welcome to the Lotus Sharm family',
       preheader: isAr ? 'تعرّف على رحلاتنا الموسمية' : 'Discover our top trips',
       bodyHtml: body,
       locale: isAr ? 'AR' : 'EN',

@@ -230,7 +230,7 @@ async function ensureSettings() {
     data: {
       id: 1,
       companyNameAr: 'لوتس شرم للسياحة',
-      companyNameEn: 'Lottus Sharm Tourism',
+      companyNameEn: 'Lotus Sharm Tourism',
       phone: '01090767278',
       whatsapp: '201090767278',
       email: 'info@lotussharm.com',

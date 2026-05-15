@@ -4,9 +4,9 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@lottussharm.com';
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'ChangeMe!Lottus2026';
-  const adminName = process.env.SEED_ADMIN_NAME || 'Lottus Admin';
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@lotussharm.com';
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'ChangeMe!Lotus2026';
+  const adminName = process.env.SEED_ADMIN_NAME || 'Lotus Admin';
 
   console.log('🌱 Seeding admin user...');
   const passwordHash = await bcrypt.hash(adminPassword, 12);
@@ -27,13 +27,13 @@ async function main() {
     where: { id: 1 },
     create: {
       id: 1,
-      companyNameAr: 'لوتتس شرم للسياحة',
-      companyNameEn: 'Lottus Sharm Tourism',
+      companyNameAr: 'لوتس شرم للسياحة',
+      companyNameEn: 'Lotus Sharm Tourism',
       companyNameRu: 'Лотус Шарм Туризм',
-      companyNameIt: 'Lottus Sharm Turismo',
+      companyNameIt: 'Lotus Sharm Turismo',
       phone: '01090767278',
       whatsapp: '201090767278',
-      email: 'info@lottussharm.com',
+      email: 'info@lotussharm.com',
       facebookUrl: 'https://www.facebook.com/share/1DMY8SUNTT/?mibextid=wwXIfr',
       instagramUrl: 'https://www.instagram.com/lotus_sharm',
       tiktokUrl: 'https://www.tiktok.com/@lotus_sharm',
@@ -41,7 +41,7 @@ async function main() {
       bankName: 'بنك أبو ظبي الإسلامي',
       bankAccount: '100001177381',
       vodafoneCash: '01090767278',
-      instaPay: 'lottussharm',
+      instaPay: 'lotussharm',
       primaryColor: '#0891b2',
       accentColor: '#f59e0b',
       yearsExperience: 13,
@@ -82,10 +82,10 @@ async function main() {
               </ul>
               <p>تصنف محمية راس محمد كواحدة من أجمل خمس محميات طبيعية على مستوى العالم خصوصاً كمواقع غوص وسنوركلينج، فلا تفوت هذه التجربة المليئة بالحماس.</p>
               <p><strong>مدة الرحلة:</strong> أربع ساعات. تبدأ في الساعة التاسعة صباحاً يومياً.</p>
-              <p>مع لوتتس شرم متشلش هم!</p>`,
-              metaTitle: 'رحلة راس محمد بالباص — لوتتس شرم',
+              <p>مع لوتس شرم متشلش هم!</p>`,
+              metaTitle: 'رحلة راس محمد بالباص — لوتس شرم',
               metaDesc:
-                'اكتشف محمية راس محمد مع لوتتس شرم. خمس وقفات، سباحة مع مدرب محترف، باص مكيف، مرشد سياحي. 750 جنيه فقط.',
+                'اكتشف محمية راس محمد مع لوتس شرم. خمس وقفات، سباحة مع مدرب محترف، باص مكيف، مرشد سياحي. 750 جنيه فقط.',
             },
             {
               locale: Locale.EN,
@@ -102,10 +102,10 @@ async function main() {
               </ul>
               <p>Ras Mohammed is ranked among the world's top five natural reserves, especially for diving and snorkeling. Don't miss this thrilling experience!</p>
               <p><strong>Duration:</strong> 4 hours. Starts daily at 9:00 AM.</p>
-              <p>With Lottus Sharm, no worries!</p>`,
-              metaTitle: 'Ras Mohammed by Bus Tour — Lottus Sharm',
+              <p>With Lotus Sharm, no worries!</p>`,
+              metaTitle: 'Ras Mohammed by Bus Tour — Lotus Sharm',
               metaDesc:
-                'Discover Ras Mohammed National Park with Lottus Sharm. Five stops, snorkeling with a professional guide, AC bus, tour guide. Only $20.',
+                'Discover Ras Mohammed National Park with Lotus Sharm. Five stops, snorkeling with a professional guide, AC bus, tour guide. Only $20.',
             },
             {
               locale: Locale.RU,
@@ -121,9 +121,9 @@ async function main() {
                 <li>Снорклинг с профессиональным инструктором</li>
               </ul>
               <p><strong>Продолжительность:</strong> 4 часа. Начало ежедневно в 9:00.</p>`,
-              metaTitle: 'Тур в Рас-Мохаммед на автобусе — Lottus Sharm',
+              metaTitle: 'Тур в Рас-Мохаммед на автобусе — Lotus Sharm',
               metaDesc:
-                'Откройте для себя национальный парк Рас-Мохаммед с Lottus Sharm. Пять остановок, снорклинг с инструктором.',
+                'Откройте для себя национальный парк Рас-Мохаммед с Lotus Sharm. Пять остановок, снорклинг с инструктором.',
             },
             {
               locale: Locale.IT,
@@ -139,9 +139,9 @@ async function main() {
                 <li>Snorkeling con guida professionale</li>
               </ul>
               <p><strong>Durata:</strong> 4 ore. Inizio ogni giorno alle 9:00.</p>`,
-              metaTitle: 'Tour di Ras Mohammed in Autobus — Lottus Sharm',
+              metaTitle: 'Tour di Ras Mohammed in Autobus — Lotus Sharm',
               metaDesc:
-                'Scopri il Parco Nazionale di Ras Mohammed con Lottus Sharm. Cinque tappe, snorkeling con guida.',
+                'Scopri il Parco Nazionale di Ras Mohammed con Lotus Sharm. Cinque tappe, snorkeling con guida.',
             },
           ],
         },
@@ -274,18 +274,18 @@ async function main() {
   const pages = [
     {
       slug: 'about',
-      ar: { title: 'من نحن', content: '<p>لوتتس شرم هي شركة تعمل في مجال السياحة منذ أكثر من 13 عاماً ولنا خبرة كبيرة في تنظيم الرحلات والجولات وعلى استعداد لتنظيم الحفلات والمؤتمرات.</p>' },
-      en: { title: 'About Us', content: '<p>Lottus Sharm is a tourism company with over 13 years of experience in organizing trips, tours, parties, and conferences.</p>' },
+      ar: { title: 'من نحن', content: '<p>لوتس شرم هي شركة تعمل في مجال السياحة منذ أكثر من 13 عاماً ولنا خبرة كبيرة في تنظيم الرحلات والجولات وعلى استعداد لتنظيم الحفلات والمؤتمرات.</p>' },
+      en: { title: 'About Us', content: '<p>Lotus Sharm is a tourism company with over 13 years of experience in organizing trips, tours, parties, and conferences.</p>' },
     },
     {
       slug: 'privacy',
-      ar: { title: 'سياسة الخصوصية', content: '<p>نلتزم في لوتتس شرم بحماية خصوصية زوارنا وعملائنا...</p>' },
-      en: { title: 'Privacy Policy', content: '<p>At Lottus Sharm, we are committed to protecting the privacy of our visitors and customers...</p>' },
+      ar: { title: 'سياسة الخصوصية', content: '<p>نلتزم في لوتس شرم بحماية خصوصية زوارنا وعملائنا...</p>' },
+      en: { title: 'Privacy Policy', content: '<p>At Lotus Sharm, we are committed to protecting the privacy of our visitors and customers...</p>' },
     },
     {
       slug: 'terms',
-      ar: { title: 'الشروط والأحكام', content: '<p>باستخدامك لموقع لوتتس شرم فإنك توافق على الشروط التالية...</p>' },
-      en: { title: 'Terms & Conditions', content: '<p>By using the Lottus Sharm website, you agree to the following terms...</p>' },
+      ar: { title: 'الشروط والأحكام', content: '<p>باستخدامك لموقع لوتس شرم فإنك توافق على الشروط التالية...</p>' },
+      en: { title: 'Terms & Conditions', content: '<p>By using the Lotus Sharm website, you agree to the following terms...</p>' },
     },
     {
       slug: 'cancellation',

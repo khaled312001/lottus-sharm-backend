@@ -27,7 +27,7 @@ async function translateWithGemini(input: TranslateInput): Promise<TranslateResu
   }
 
   const prompt = `You are a professional tourism copywriter and translator. Translate the following text from ${LOCALE_NAMES[input.from]} into ${targetLocales.map((t) => LOCALE_NAMES[t]).join(', ')}.
-Context: ${input.context || 'Egyptian tourism trip content for Lottus Sharm tourism company'}.
+Context: ${input.context || 'Egyptian tourism trip content for Lotus Sharm tourism company'}.
 Rules:
 - Keep the same meaning and tone (warm, professional, tourism marketing).
 - Preserve any HTML tags if present.

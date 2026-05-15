@@ -1,7 +1,7 @@
 {
   "name": "lottus-sharm-backend",
   "version": "1.0.0",
-  "description": "Lottus Sharm Tourism — Backend API (Express + Prisma + MySQL)",
+  "description": "Lotus Sharm Tourism — Backend API (Express + Prisma + MySQL)",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",

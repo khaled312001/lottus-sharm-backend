@@ -1,6 +1,6 @@
-# Lottus Sharm — Backend
+# Lotus Sharm — Backend
 
-Express + TypeScript + Prisma + MySQL backend for the Lottus Sharm Tourism website.
+Express + TypeScript + Prisma + MySQL backend for the Lotus Sharm Tourism website.
 
 ## Quick start (local)
 
@@ -19,14 +19,14 @@ npm run prisma:migrate -- --name init
 npm run seed
 
 # 5. (optional) import all images/videos from a folder into the Media library
-npm run seed:media -- "E:/Lottus Sharm Tourism/Images & Videos"
+npm run seed:media -- "E:/Lotus Sharm Tourism/Images & Videos"
 
 # 6. start dev server
 npm run dev
 # → API listening on http://localhost:4000/api
 ```
 
-Default admin login after seeding: `admin@lottussharm.com` / `ChangeMe!Lottus2026` (change in `.env`).
+Default admin login after seeding: `admin@lotussharm.com` / `ChangeMe!Lotus2026` (change in `.env`).
 
 ## Available scripts
 
