@@ -102,6 +102,14 @@ export async function createTrip(input: TripCreateInput) {
       gallery: {
         create: input.galleryMediaIds.map((mediaId, i) => ({ mediaId, order: i })),
       },
+      timeline: input.timeline && input.timeline.length > 0 ? {
+        create: input.timeline.map((s, i) => ({
+          order: s.order ?? i,
+          time: s.time ?? null,
+          icon: s.icon ?? null,
+          translations: { create: s.translations.map((tr) => ({ locale: tr.locale, title: tr.title, desc: tr.desc ?? null })) },
+        })),
+      } : undefined,
     },
     include: tripInclude,
   });
@@ -174,7 +182,29 @@ export async function updateTrip(id: number, input: TripUpdateInput) {
       });
     }
 
+    if (input.timeline) {
+      await tx.tripTimelineStep.deleteMany({ where: { tripId: id } });
+      for (let i = 0; i < input.timeline.length; i++) {
+        const s = input.timeline[i];
+        await tx.tripTimelineStep.create({
+          data: {
+            tripId: id,
+            order: s.order ?? i,
+            time: s.time ?? null,
+            icon: s.icon ?? null,
+            translations: { create: s.translations.map((tr) => ({ locale: tr.locale, title: tr.title, desc: tr.desc ?? null })) },
+          },
+        });
+      }
+    }
+
     return tx.trip.findUnique({ where: { id }, include: tripInclude });
+  }, {
+    // Updates touch many child rows (translations, highlights, bullets, gallery,
+    // timeline) over a remote MySQL connection. The 5s Prisma default is not
+    // enough — bump to 30s wait & 60s execution.
+    maxWait: 30_000,
+    timeout: 60_000,
   });
 }
 

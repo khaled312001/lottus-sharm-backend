@@ -29,6 +29,21 @@ const bullet = z.object({
     .min(1),
 });
 
+const timelineStep = z.object({
+  order: z.number().int().nonnegative().default(0),
+  time: z.string().max(10).optional().nullable(),
+  icon: z.string().max(40).optional().nullable(),
+  translations: z
+    .array(
+      z.object({
+        locale: LocaleEnum,
+        title: z.string().min(1).max(255),
+        desc: z.string().max(2000).optional().nullable(),
+      }),
+    )
+    .min(1),
+});
+
 export const tripCreateSchema = z.object({
   slug: z.string().optional(),
   category: CategoryEnum.default('SEA'),
@@ -49,6 +64,7 @@ export const tripCreateSchema = z.object({
   translations: z.array(translation).min(1),
   highlights: z.array(highlight).default([]),
   bullets: z.array(bullet).default([]),
+  timeline: z.array(timelineStep).default([]),
 });
 
 export const tripUpdateSchema = tripCreateSchema.partial();
