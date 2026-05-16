@@ -127,6 +127,7 @@ model Media {
 
   tripsAsHero  Trip[]      @relation("TripHero")
   tripsAsCover BlogPost[]  @relation("PostCover")
+  pagesAsHero  StaticPage[] @relation("StaticPageHero")
   tripGallery  TripMedia[]
 
   @@index([type])
@@ -391,6 +392,8 @@ model BlogPostTag {
 model StaticPage {
   id           Int                     @id @default(autoincrement())
   slug         String                  @unique
+  heroImageId  Int?
+  heroImage    Media?                  @relation("StaticPageHero", fields: [heroImageId], references: [id])
   createdAt    DateTime                @default(now())
   updatedAt    DateTime                @updatedAt
   translations StaticPageTranslation[]
@@ -401,6 +404,7 @@ model StaticPageTranslation {
   pageId    Int
   locale    Locale
   title     String  @db.VarChar(255)
+  subtitle  String? @db.VarChar(500)
   content   String  @db.LongText
   metaTitle String? @db.VarChar(255)
   metaDesc  String? @db.Text

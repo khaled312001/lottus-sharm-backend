@@ -11,18 +11,23 @@ import { slugify } from '../utils/slug';
 const translation = z.object({
   locale: LocaleEnum,
   title: z.string().min(1),
+  subtitle: z.string().optional().nullable(),
   content: z.string().min(1),
-  metaTitle: z.string().optional(),
-  metaDesc: z.string().optional(),
+  metaTitle: z.string().optional().nullable(),
+  metaDesc: z.string().optional().nullable(),
 });
 
 const createSchema = z.object({
   slug: z.string().min(1),
+  heroImageId: z.number().int().positive().optional().nullable(),
   translations: z.array(translation).min(1),
 });
-const updateSchema = z.object({ translations: z.array(translation).min(1) });
+const updateSchema = z.object({
+  heroImageId: z.number().int().positive().optional().nullable(),
+  translations: z.array(translation).min(1),
+});
 
-const pageInclude = Prisma.validator<Prisma.StaticPageInclude>()({ translations: true });
+const pageInclude = Prisma.validator<Prisma.StaticPageInclude>()({ translations: true, heroImage: true });
 type StaticPageWithTranslations = Prisma.StaticPageGetPayload<{ include: typeof pageInclude }>;
 
 export const publicPagesRouter = Router();
@@ -74,7 +79,20 @@ adminPagesRouter.post(
     const body = createSchema.parse(req.body);
     const slug = slugify(body.slug);
     const page = await prisma.staticPage.create({
-      data: { slug, translations: { create: body.translations } },
+      data: {
+        slug,
+        heroImageId: body.heroImageId ?? null,
+        translations: {
+          create: body.translations.map((t) => ({
+            locale: t.locale,
+            title: t.title,
+            subtitle: t.subtitle ?? null,
+            content: t.content,
+            metaTitle: t.metaTitle ?? null,
+            metaDesc: t.metaDesc ?? null,
+          })),
+        },
+      },
       include: pageInclude,
     });
     res.status(201).json({ ok: true, data: page });
@@ -88,11 +106,27 @@ adminPagesRouter.patch(
     const slug = String(req.params.slug);
     const existing = await prisma.staticPage.findUnique({ where: { slug } });
     if (!existing) throw ApiError.notFound();
+
+    if (body.heroImageId !== undefined) {
+      await prisma.staticPage.update({
+        where: { id: existing.id },
+        data: { heroImageId: body.heroImageId },
+      });
+    }
+
     for (const t of body.translations) {
+      const data = {
+        locale: t.locale,
+        title: t.title,
+        subtitle: t.subtitle ?? null,
+        content: t.content,
+        metaTitle: t.metaTitle ?? null,
+        metaDesc: t.metaDesc ?? null,
+      };
       await prisma.staticPageTranslation.upsert({
         where: { pageId_locale: { pageId: existing.id, locale: t.locale } },
-        create: { ...t, pageId: existing.id },
-        update: t,
+        create: { ...data, pageId: existing.id },
+        update: data,
       });
     }
     const page = await prisma.staticPage.findUnique({
