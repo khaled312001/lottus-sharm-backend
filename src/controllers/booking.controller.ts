@@ -11,12 +11,20 @@ import {
   bookingStatusUpdate,
 } from '../validators/booking.validator';
 import { sendBookingCreatedEmails } from '../services/email.service';
+import { emitNotification } from '../utils/event-bus';
 
 export async function publicCreate(req: Request, res: Response) {
   const input = bookingCreateSchema.parse(req.body);
   const booking = await createBooking(input);
   // Fire-and-forget email
   sendBookingCreatedEmails(booking.id).catch((e) => console.error('[email]', e));
+  // Real-time admin notification
+  emitNotification({
+    type: 'booking',
+    title: `حجز جديد #${booking.reference}`,
+    body: `${booking.customer?.fullName || ''} — ${booking.total} ${booking.currency}`,
+    link: `/admin/bookings`,
+  });
   res.status(201).json({ ok: true, data: booking });
 }
 

@@ -5,6 +5,7 @@ import { requireAuth } from '../middlewares/auth.middleware';
 import { prisma } from '../config/db';
 import { LocaleEnum } from '../validators/trip.validator';
 import { getVisitorId } from '../utils/visitor-id';
+import { emitNotification } from '../utils/event-bus';
 
 const commentCreate = z.object({
   authorName: z.string().trim().min(2).max(120),
@@ -49,6 +50,12 @@ publicCommentsRouter.post(
     }
     const created = await prisma.tripComment.create({
       data: { tripId: trip.id, visitorId, ...body },
+    });
+    emitNotification({
+      type: 'comment',
+      title: `تعليق جديد على رحلة`,
+      body: `${created.authorName}: ${created.content.slice(0, 80)}${created.content.length > 80 ? '…' : ''}`,
+      link: '/admin/comments',
     });
     res.status(201).json({
       ok: true,

@@ -29,6 +29,7 @@ import { publicNewsletterRouter, adminNewsletterRouter } from './routes/newslett
 import { publicReviewsRouter, publicReviewsBySlugRouter, adminReviewsRouter } from './routes/reviews.routes';
 import { publicLikesRouter } from './routes/likes.routes';
 import { publicCommentsRouter, adminCommentsRouter } from './routes/comments.routes';
+import { adminNotificationsRouter } from './routes/notifications.routes';
 import { adminEmailRouter } from './routes/email.routes';
 import customersRoutes from './routes/customers.routes';
 import usersRoutes from './routes/users.routes';
@@ -109,6 +110,7 @@ export function buildApp() {
   app.use('/api/admin/stats', statsRoutes);
   app.use('/api/admin/translate', translateRoutes);
   app.use('/api/admin/email', adminEmailRouter);
+  app.use('/api/admin/notifications', adminNotificationsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

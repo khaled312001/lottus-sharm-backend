@@ -5,6 +5,7 @@ import { requireAuth } from '../middlewares/auth.middleware';
 import { prisma } from '../config/db';
 import { LocaleEnum } from '../validators/trip.validator';
 import { sendReviewSubmittedEmail } from '../services/email.service';
+import { emitNotification } from '../utils/event-bus';
 
 // Sub-router for /api/public/trips/:slug/reviews
 const reviewBySlugCreate = z.object({
@@ -51,6 +52,12 @@ publicReviewsBySlugRouter.post(
       locale: body.locale,
       tripTitle: trip.translations[0]?.title,
     }).catch((e) => console.error('[email]', e));
+    emitNotification({
+      type: 'review',
+      title: `تقييم جديد ${'★'.repeat(body.rating)}`,
+      body: `${body.customerName} — ${trip.translations[0]?.title || ''}`,
+      link: '/admin/reviews',
+    });
     res.status(201).json({ ok: true, data: { id: review.id } });
   }),
 );
@@ -108,6 +115,12 @@ publicReviewsRouter.post(
       locale: body.locale,
       tripTitle: trip?.translations[0]?.title,
     }).catch((e) => console.error('[email]', e));
+    emitNotification({
+      type: 'review',
+      title: `تقييم جديد ${'★'.repeat(body.rating)}`,
+      body: `${body.customerName} — ${trip?.translations[0]?.title || ''}`,
+      link: '/admin/reviews',
+    });
     res.status(201).json({ ok: true, data: { id: review.id } });
   }),
 );

@@ -6,6 +6,7 @@ import { requireAuth } from '../middlewares/auth.middleware';
 import { prisma } from '../config/db';
 import { LocaleEnum } from '../validators/trip.validator';
 import { sendContactInquiryEmail } from '../services/email.service';
+import { emitNotification } from '../utils/event-bus';
 
 const createSchema = z.object({
   name: z.string().min(2).max(120),
@@ -24,6 +25,12 @@ publicContactRouter.post(
     const body = createSchema.parse(req.body);
     const inquiry = await prisma.contactInquiry.create({ data: body });
     sendContactInquiryEmail(body).catch((e) => console.error('[email]', e));
+    emitNotification({
+      type: 'contact',
+      title: `استفسار جديد من ${body.name}`,
+      body: body.subject || body.message.slice(0, 100),
+      link: '/admin/inquiries',
+    });
     res.status(201).json({ ok: true, data: { id: inquiry.id } });
   }),
 );
